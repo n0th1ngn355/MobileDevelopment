@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">lab2app</string>
+    <string name="q1">2+2=4?</string>
+    <string name="q2">3+4=6?</string>
+    <string name="q3">2+1=0?</string>
+    <string name="q4">1000-7=993?</string>
+    <string name="q5">8-7=0?</string>
+
+    <string name="correct_toast">Правильно</string>
+    <string name="incorrect_toast">Неправильно </string>
+</resources>
