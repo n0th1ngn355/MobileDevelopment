@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity() {
 
         for (op in operations){
             op.setOnClickListener{btn ->
+                if (inputF.text.isNullOrEmpty() && operand1.text.isNullOrEmpty())
+                    return@setOnClickListener
                 if (currentOperation == '='){
                     operand1.setText(inputF.text)
                     inputF.setText("")
