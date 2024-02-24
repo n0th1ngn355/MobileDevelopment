@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.imageButtonNext)
         prevButton = findViewById(R.id.imageButtonPrev)
         questionTV = findViewById(R.id.tvQuestion)
+        val cheatBtn = findViewById<Button>(R.id.cheatBtn)
 
         updateQuestion()
 
@@ -47,8 +48,11 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.moveToPrev()
             updateQuestion()
         }
+        cheatBtn.setOnClickListener{
+            val intent = CheatActivity.newIntent(this@MainActivity, quizViewModel.currentQuestionAnswer)
+            startActivity(intent)
+        }
     }
-
     private fun checkAnswer(ans: Boolean){
         val correctAns = quizViewModel.currentQuestionAnswer
         val messageResId = when{

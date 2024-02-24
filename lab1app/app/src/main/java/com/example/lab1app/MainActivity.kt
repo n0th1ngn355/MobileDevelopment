@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.b0),findViewById<Button>(R.id.b1), findViewById<Button>(R.id.b2), findViewById<Button>(R.id.b3), findViewById<Button>(R.id.b4),
             findViewById<Button>(R.id.b5), findViewById<Button>(R.id.b6), findViewById<Button>(R.id.b7), findViewById<Button>(R.id.b8), findViewById<Button>(R.id.b9))
 
-        val del = findViewById<ImageButton>(R.id.del)
+        val del = findViewById<Button>(R.id.del)
         val bc = findViewById<Button>(R.id.bc)
 
         val divide = findViewById<Button>(R.id.divide)
@@ -34,14 +34,17 @@ class MainActivity : AppCompatActivity() {
                 if ((btn as Button).text == "0" ){
                     if (!inputF.text.isNullOrEmpty()){
                         inputF.setText(inputF.text.toString() + btn.text)
+                        inputF.setError(null)
                     }
                 } else{
+                    inputF.setError(null)
                     if (inputF.text.toString() != "0"){
                         inputF.setText(inputF.text.toString() + btn.text)
                     }else{
                         inputF.setText(btn.text)
                     }
                 }
+                inputF.setSelection(inputF.length())
             }
         }
 
@@ -58,9 +61,15 @@ class MainActivity : AppCompatActivity() {
 
         for (op in operations){
             op.setOnClickListener{btn ->
-                if (inputF.text.isNullOrEmpty() && operand1.text.isNullOrEmpty())
-                    return@setOnClickListener
+//                if (inputF.text.isNullOrEmpty() && operand1.text.isNullOrEmpty())
+//                    return@setOnClickListener
                 if (currentOperation == '='){
+                    if (inputF.text.isNullOrEmpty()){
+                        inputF.setError("Введите первое число")
+                        return@setOnClickListener
+                    }else{
+                        inputF.setError(null)
+                    }
                     operand1.setText(inputF.text)
                     inputF.setText("")
                     oper.setText(op.text)
@@ -83,12 +92,19 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.equal).setOnClickListener{btn ->
             if (!inputF.text.isNullOrEmpty() && !operand1.text.isNullOrEmpty()){
+                inputF.setError(null)
                 var a = operand1.text.toString().toFloat()
                 var b = inputF.text.toString().toFloat()
                 inputF.setText(calc(a,b,currentOperation).toString())
                 operand1.setText("")
                 oper.setText("")
                 currentOperation = '='
+            }else if(!inputF.text.isNullOrEmpty() && oper.text.isNullOrEmpty()) {
+                inputF.setError("Введите операцию")
+            }else if(inputF.text.isNullOrEmpty() && !operand1.text.isNullOrEmpty()){
+                inputF.setError("Введите второе число")
+            }else{
+                inputF.setError("Введите первое число")
             }
         }
 
@@ -97,6 +113,7 @@ class MainActivity : AppCompatActivity() {
             operand1.setText("")
             oper.setText("")
             currentOperation = '='
+            inputF.setError(null)
         }
 
         del.setOnClickListener{

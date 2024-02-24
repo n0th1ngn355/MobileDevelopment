@@ -29,15 +29,18 @@
         android:ems="10"
         android:gravity="center"
         android:hint="Число"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:textAlignment="textEnd"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.588"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/operand1"
-        tools:ignore="HardcodedText"
-        android:importantForAutofill="no" />
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/oper"
@@ -58,7 +61,7 @@
         android:layout_height="500dp"
         android:columnCount="4"
         android:rowCount="5"
-        android:useDefaultMargins="true"
+        android:useDefaultMargins="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,22 +70,22 @@
         <Button
             android:id="@+id/bc"
             style="@style/ButtonStyle"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnSpan="2"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="C"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
-        <ImageButton
+        <Button
             android:id="@+id/del"
             style="@style/ButtonStyle"
             android:layout_rowWeight="1"
             android:layout_columnSpan="2"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
-            android:src="@drawable/baseline_backspace_24"
+            android:text="⌫"
             android:contentDescription="backspace"
             tools:ignore="HardcodedText,ImageContrastCheck" />
 
@@ -93,7 +96,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="7"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -103,7 +105,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="8"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -113,7 +114,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="9"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -123,7 +123,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="/"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
 
@@ -134,7 +133,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="4"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText,TextSizeCheck" />
 
         <Button
@@ -144,7 +142,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="5"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText,TextSizeCheck" />
 
         <Button
@@ -154,7 +151,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="6"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -164,7 +160,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="*"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
 
@@ -175,7 +170,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="1"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -185,7 +179,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="2"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -195,7 +188,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="3"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -205,7 +197,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="-"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
 
@@ -216,7 +207,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text=","
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -226,8 +216,7 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="0"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/white" />
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/equal"
@@ -236,7 +225,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="="
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -246,7 +234,6 @@
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:text="+"
-            android:textColor="@color/white"
             tools:ignore="HardcodedText" />
     </GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
