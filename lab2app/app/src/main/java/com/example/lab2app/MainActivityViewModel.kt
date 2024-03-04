@@ -11,15 +11,18 @@ class MainActivityViewModel: ViewModel() {
         Question(R.string.q5, false)
     )
     private var currentIndex = 0
+    var isCheater = false
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
     val currentQuestionText: Int
         get() = questionBank[currentIndex].textResId
     fun moveToNext(){
+        isCheater=false
         currentIndex = (currentIndex + 1) % questionBank.size
     }
     fun moveToPrev(){
+        isCheater=false
         currentIndex = (questionBank.size + currentIndex - 1) % questionBank.size
     }
 }

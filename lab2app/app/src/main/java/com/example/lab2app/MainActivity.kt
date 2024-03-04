@@ -1,11 +1,16 @@
 package com.example.lab2app
 
+import android.app.Activity
+import android.app.Instrumentation.ActivityResult
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity() {
@@ -48,14 +53,26 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.moveToPrev()
             updateQuestion()
         }
+
+        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result ->
+            if (result.resultCode == Activity.RESULT_OK){
+                val data: Intent?= result.data
+                quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+            }
+        }
+
         cheatBtn.setOnClickListener{
             val intent = CheatActivity.newIntent(this@MainActivity, quizViewModel.currentQuestionAnswer)
-            startActivity(intent)
+            resultLauncher.launch(intent)
         }
     }
     private fun checkAnswer(ans: Boolean){
         val correctAns = quizViewModel.currentQuestionAnswer
+        val isCheat = quizViewModel.isCheater
+
         val messageResId = when{
+            isCheat -> R.string.cheater_text
             ans == correctAns -> R.string.correct_toast
             else -> R.string.incorrect_toast
         }

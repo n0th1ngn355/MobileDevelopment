@@ -1,5 +1,6 @@
 package com.example.lab2app
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 
 private const val EXTRA_ANSWER_IS_TRUE = "com.example.app2_352_2024.answer_is_true"
+const val EXTRA_ANSWER_SHOWN = "com.example.app2_352_2024.answer_shown"
 
 class CheatActivity : AppCompatActivity() {
 
@@ -42,6 +44,11 @@ class CheatActivity : AppCompatActivity() {
 
         showAnswerButton.setOnClickListener{
             answerTextView.visibility = View.VISIBLE
+            showAnswerButton.visibility = View.GONE
+            val data = Intent().apply {
+                putExtra(EXTRA_ANSWER_SHOWN, true)
+            }
+            setResult(Activity.RESULT_OK, data)
         }
 
     }

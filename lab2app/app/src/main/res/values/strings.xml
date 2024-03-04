@@ -8,4 +8,5 @@
 
     <string name="correct_toast">Правильно</string>
     <string name="incorrect_toast">Неправильно </string>
+    <string name="cheater_text">Списывать нехорошо </string>
 </resources>
