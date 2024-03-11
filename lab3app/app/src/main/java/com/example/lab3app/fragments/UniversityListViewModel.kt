@@ -48,7 +48,7 @@ class UniversityListViewModel: ViewModel() {
         }
     }
 
-    fun seetCurrentUniversity(university: University){
+    fun setCurrentUniversity(university: University){
         UniversityRepository.getInstance().setCurrentUniversity(university)
     }
 }

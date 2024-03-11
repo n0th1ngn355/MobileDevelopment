@@ -27,7 +27,7 @@ class CheatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cheat)
+//        setContentView(R.layout.activity_cheat)
 
         answerIsTrue = intent?.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)?:false
 
