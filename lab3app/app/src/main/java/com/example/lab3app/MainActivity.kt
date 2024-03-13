@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.example.lab3app.fragments.UniversityListFragment
+import com.example.lab3app.repository.UniversityRepository
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,5 +31,21 @@ class MainActivity : AppCompatActivity() {
         _miUpdateUniversity = menu?.findItem(R.id.miUpdateUniversity)
         _miDeleteUniversity = menu?.findItem(R.id.miDeleteUniversity)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.miNewUniversity ->{
+                val fedit: Edit = UniversityListFragment.getInstance()
+                fedit.append()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onDestroy() {
+        UniversityRepository.getInstance().saveData()
+        super.onDestroy()
     }
 }

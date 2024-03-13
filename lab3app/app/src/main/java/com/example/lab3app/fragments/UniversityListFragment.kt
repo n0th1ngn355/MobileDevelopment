@@ -1,9 +1,11 @@
 package com.example.lab3app.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -55,7 +57,7 @@ class UniversityListFragment: Fragment(), MainActivity.Edit {
             viewType: Int
         ): UniversityAdapter.ItemHolder {
             val item = layoutInflater.inflate(R.layout.element_university_list, parent, false)
-            return ItemHolder(view!!)
+            return ItemHolder(item!!)
         }
 
         override fun getItemCount(): Int = items.size
@@ -76,7 +78,7 @@ class UniversityListFragment: Fragment(), MainActivity.Edit {
     }
 
     override fun append() {
-        TODO("Not yet implemented")
+        newUniversity()
     }
 
     override fun delete() {
@@ -87,4 +89,21 @@ class UniversityListFragment: Fragment(), MainActivity.Edit {
         TODO("Not yet implemented")
     }
 
+    private fun newUniversity(){
+        val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_university_edit, null)
+        val inputName = mDialogView.findViewById<EditText>(R.id.etName)
+        val inputCity = mDialogView.findViewById<EditText>(R.id.etCity)
+        AlertDialog.Builder(requireContext())
+            .setTitle("Информация об университете")
+            .setView(mDialogView)
+            .setPositiveButton("Добавить"){ _, _ ->
+                if (inputName.text.isNotBlank() and inputCity.text.isNotBlank()){
+                    viewModel.appendUniversity(inputName.text.toString(), inputCity.text.toString())
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .setCancelable(true)
+            .create()
+            .show()
+    }
 }

@@ -17,7 +17,7 @@ class UniversityListViewModel: ViewModel() {
 
     private val universityListObserver = Observer<UniversityList?>{
         list ->
-        universityList.postValue(list)
+        universityList.postValue(list!!)
     }
 
     init{
