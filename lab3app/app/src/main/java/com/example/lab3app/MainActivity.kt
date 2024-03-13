@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.example.lab3app.fragments.UniversityListFragment
+import com.example.lab3app.fragments.UpdateActivity
 import com.example.lab3app.repository.UniversityRepository
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UpdateActivity {
 
     interface Edit{
         fun append()
@@ -40,12 +41,26 @@ class MainActivity : AppCompatActivity() {
                 fedit.append()
                 true
             }
+            R.id.miUpdateUniversity ->{
+                val fedit: Edit = UniversityListFragment.getInstance()
+                fedit.update()
+                true
+            }
+            R.id.miDeleteUniversity ->{
+                val fedit: Edit = UniversityListFragment.getInstance()
+                fedit.delete()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         UniversityRepository.getInstance().saveData()
-        super.onDestroy()
+        super.onStop()
+    }
+
+    override fun setTitle(_title: String) {
+        title = _title
     }
 }
