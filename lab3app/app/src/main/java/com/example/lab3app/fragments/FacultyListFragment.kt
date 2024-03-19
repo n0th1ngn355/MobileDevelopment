@@ -6,27 +6,47 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lab3app.R
+import com.example.lab3app.databinding.FragmentFacultyListBinding
+import com.example.lab3app.databinding.FragmentUniversityListBinding
 
 class FacultyListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = FacultyListFragment()
+        private var INSTANCE: FacultyListFragment? = null
+
+        fun getInstance(): FacultyListFragment {
+            if (INSTANCE == null) INSTANCE = FacultyListFragment()
+            return INSTANCE ?: throw Exception("FacultyListFragment не создан")
+        }
     }
 
     private lateinit var viewModel: FacultyListViewModel
+    private lateinit var _binding: FragmentFacultyListBinding
+    val binding
+        get() = _binding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_faculty_list2, container, false)
+    ): View {
+        _binding = FragmentFacultyListBinding.inflate(inflater, container, false)
+        binding.rvFacultyList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(FacultyListViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel.facultyList.observe(viewLifecycleOwner) {
+            binding.rvFacultyList.adapter = FacultyAdapter(it!!.items)
+        }
+        binding.floatingActionButton.setOnClickListener{
+            newFaculty()
+        }
     }
-
 }
