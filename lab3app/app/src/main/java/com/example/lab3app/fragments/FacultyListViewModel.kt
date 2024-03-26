@@ -33,14 +33,14 @@ class FacultyListViewModel : ViewModel() {
         }
     }
 
-    fun appendFaculty(name: String, city: String){
+    fun appendFaculty(name: String){
         val faculty = Faculty()
         faculty.universityID = UniversityRepository.getInstance().university.value?.id
         faculty.name = name
         UniversityRepository.getInstance().newFaculty(faculty)
     }
 
-    fun updateFaculty(name: String, city: String){
+    fun updateFaculty(name: String){
         if (_faculty != null){
             _faculty!!.name = name
             UniversityRepository.getInstance().updateFaculty(_faculty!!)

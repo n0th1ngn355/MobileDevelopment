@@ -1,11 +1,13 @@
 package com.example.lab3app.fragments
 
+import android.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,8 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3app.R
 import com.example.lab3app.data.Faculty
-import com.example.lab3app.data.Faculty
-import com.example.lab3app.databinding.FragmentFacultyListBinding
 import com.example.lab3app.databinding.FragmentFacultyListBinding
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -61,7 +61,59 @@ class FacultyListFragment : Fragment() {
             newFaculty()
         }
     }
+    private fun newFaculty() {
+        val mDialogView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.dialog_university_edit, null)
+        val inputName = mDialogView.findViewById<EditText>(R.id.etName)
+        mDialogView.findViewById<EditText>(R.id.etCity).visibility=View.GONE
+        mDialogView.findViewById<TextView>(R.id.tvCity).visibility=View.GONE
+        AlertDialog.Builder(requireContext())
+            .setTitle("Информация об факультете")
+            .setView(mDialogView)
+            .setPositiveButton("Добавить") { _, _ ->
+                if (inputName.text.isNotBlank()) {
+                    viewModel.appendFaculty(inputName.text.toString())
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .setCancelable(true)
+            .create()
+            .show()
+    }
 
+    private fun updateFaculty() {
+        val mDialogView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.dialog_university_edit, null)
+        val inputName = mDialogView.findViewById<EditText>(R.id.etName)
+        mDialogView.findViewById<EditText>(R.id.etCity).visibility=View.GONE
+        mDialogView.findViewById<EditText>(R.id.tvCity).visibility=View.GONE
+        inputName.setText(viewModel.faculty?.name)
+        AlertDialog.Builder(requireContext())
+            .setTitle("Изменить информацию о факультете")
+            .setView(mDialogView)
+            .setPositiveButton("Изменить") { _, _ ->
+                if (inputName.text.isNotBlank()) {
+                    viewModel.updateFaculty(inputName.text.toString())
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .setCancelable(true)
+            .create()
+            .show()
+    }
+
+    private fun deleteFaculty(){
+        AlertDialog.Builder(requireContext())
+            .setTitle("Удаление!")
+            .setMessage("Вы действительно хотите удалить факультет ${viewModel.faculty?.name ?: ""}?")
+            .setPositiveButton("Да"){_, _ ->
+                viewModel.deleteFaculty()
+            }
+            .setNegativeButton("Нет", null)
+            .setCancelable(true)
+            .create()
+            .show()
+    }
     private inner class FacultyAdapter(private val items: List<Faculty>) :
         RecyclerView.Adapter<FacultyAdapter.ItemHolder>() {
         override fun onCreateViewHolder(
@@ -111,9 +163,9 @@ class FacultyListFragment : Fragment() {
                     deleteFaculty()
                 }
 
-                val lib = itemView.findViewById<LinearLayout>(R.id.llButtons)
-                lib.visibility = View.INVISIBLE
-                lib?.layoutParams=lib?.layoutParams.apply { this?.width=1 }
+                val llb = itemView.findViewById<LinearLayout>(R.id.llButtons)
+                llb.visibility = View.INVISIBLE
+                llb?.layoutParams=llb?.layoutParams.apply { this?.width=1 }
 
                 val cl = View.OnClickListener {
                     viewModel.setCurrentFaculty(faculty)
@@ -124,21 +176,25 @@ class FacultyListFragment : Fragment() {
                 tv.setOnClickListener(cl)
 
 
-                c_l.setOnLongClickListener{
-                    c_l.callOnClick()
-                    lib.visibility= View.VISIBLE
+                val lcl = View.OnLongClickListener{
+                    viewModel.setCurrentFaculty(faculty)
+                    updateCurrentView(itemView)
+                    llb.visibility= View.VISIBLE
                     MainScope().launch{
-                        val lp = lib?.layoutParams
+                        val lp = llb?.layoutParams
                         lp?.width = 1
 
                         while (lp?.width!! < 350){
                             lp?.width = lp?.width!! + 35
-                            lib?.layoutParams = lp
+                            llb?.layoutParams = lp
                             delay(50)
                         }
                     }
                     true
                 }
+
+                c_l.setOnLongClickListener(lcl)
+                tv.setOnLongClickListener(lcl)
             }
         }
     }
