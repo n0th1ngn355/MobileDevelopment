@@ -86,7 +86,7 @@ class FacultyListFragment : Fragment() {
             LayoutInflater.from(requireContext()).inflate(R.layout.dialog_university_edit, null)
         val inputName = mDialogView.findViewById<EditText>(R.id.etName)
         mDialogView.findViewById<EditText>(R.id.etCity).visibility=View.GONE
-        mDialogView.findViewById<EditText>(R.id.tvCity).visibility=View.GONE
+        mDialogView.findViewById<TextView>(R.id.tvCity).visibility=View.GONE
         inputName.setText(viewModel.faculty?.name)
         AlertDialog.Builder(requireContext())
             .setTitle("Изменить информацию о факультете")

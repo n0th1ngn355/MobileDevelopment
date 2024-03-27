@@ -22,7 +22,11 @@ class FacultyListViewModel : ViewModel() {
 
     private val facultyListObserver = Observer<FacultyList?>{
             list ->
-        facultyList.postValue(list!!)
+        facultyList.postValue(
+            FacultyList().apply {
+                items=list?.items?.filter { it.universityID==university?.id } as MutableList<Faculty>
+            }
+        )
     }
 
     init{

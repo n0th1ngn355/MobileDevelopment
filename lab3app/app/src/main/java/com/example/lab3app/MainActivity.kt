@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import com.example.lab3app.fragments.FacultyListFragment
 import com.example.lab3app.fragments.UniversityListFragment
@@ -31,8 +33,29 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcwMain, UniversityListFragment.getInstance()).commit()
+        onBackPressedDispatcher.addCallback(this){
+            if(supportFragmentManager.backStackEntryCount > 0){
+                supportFragmentManager.popBackStack()
+                when(currentFragmentID){
+                    universityID ->{
+                        finish()
+                    }
+                    facultyId ->{
+                        currentFragmentID= universityID
+                        setTitle("Список университетов")
+                    }
+                    else ->{}
+                }
+                updateMenuView()
+            }
+            else {
+                finish()
+            }
+        }
+        setFragment(universityID)
+
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.fcwMain, UniversityListFragment.getInstance()).commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -91,6 +114,12 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
     }
 
     private fun setFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.fcwMain, fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fcwMain, fragment).addToBackStack(null).commit()
+    }
+
+    private fun updateMenuView(){
+        _miNewUniversity?.isVisible=currentFragmentID==universityID
+        _miDeleteUniversity?.isVisible=currentFragmentID==universityID
+        _miUpdateUniversity?.isVisible=currentFragmentID==universityID
     }
 }
