@@ -1,6 +1,7 @@
 package com.example.lab3app.fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -53,7 +54,6 @@ class FacultyListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FacultyListViewModel::class.java)
         viewModel.facultyList.observe(viewLifecycleOwner) {
             binding.rvFacultyList.adapter = FacultyAdapter(it!!.items)
         }
@@ -197,5 +197,11 @@ class FacultyListFragment : Fragment() {
                 tv.setOnLongClickListener(lcl)
             }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        viewModel = ViewModelProvider(this).get(FacultyListViewModel::class.java)
+        (context as UpdateActivity).setTitle("Факультеты ${viewModel.university?.name}")
     }
 }

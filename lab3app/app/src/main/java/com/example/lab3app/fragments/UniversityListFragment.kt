@@ -103,6 +103,8 @@ class UniversityListFragment : Fragment(), MainActivity.Edit {
                 tv.setOnClickListener(cl)
                 tvc.setOnClickListener(cl)
                 val lcl = View.OnLongClickListener {
+                    viewModel.setCurrentUniversity(university)
+
                     (requireContext() as UpdateActivity).setFragment(MainActivity.facultyId)
                     true
                 }

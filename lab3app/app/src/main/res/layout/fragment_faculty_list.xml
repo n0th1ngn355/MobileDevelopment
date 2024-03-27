@@ -19,5 +19,5 @@
         android:layout_marginBottom="30dp"
         android:clickable="true"
         android:foreground="@drawable/fab_background"
-        app:srcCompat="@drawable/fab_background" />
+        app:srcCompat="@android:drawable/ic_input_add" />
 </FrameLayout>

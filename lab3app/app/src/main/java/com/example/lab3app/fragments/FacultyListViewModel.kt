@@ -3,6 +3,7 @@ package com.example.lab3app.fragments
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.lab3app.data.Faculty
 import com.example.lab3app.data.FacultyList
 import com.example.lab3app.repository.UniversityRepository
@@ -14,6 +15,10 @@ class FacultyListViewModel : ViewModel() {
 
     val faculty
         get() = _faculty
+
+
+    val university
+        get() = UniversityRepository.getInstance().university.value
 
     private val facultyListObserver = Observer<FacultyList?>{
             list ->
