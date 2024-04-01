@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
 
     private fun setFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.fcwMain, fragment).addToBackStack(null).commit()
+        updateMenuView()
     }
 
     private fun updateMenuView(){
