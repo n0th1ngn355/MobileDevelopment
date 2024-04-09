@@ -2,7 +2,9 @@ package com.example.lab3app.repository
 
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.preference.PreferenceManager
 import com.example.lab3app.Application352
 import com.example.lab3app.R
@@ -10,8 +12,13 @@ import com.example.lab3app.data.Faculty
 import com.example.lab3app.data.FacultyList
 import com.example.lab3app.data.University
 import com.example.lab3app.data.UniversityList
+import com.example.lab3app.database.UniversityDB
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 const val TAG = "com.example.lab3app.TAG"
 
@@ -28,16 +35,17 @@ class UniversityRepository private constructor() {
         }
     }
 
-    var universityList: MutableLiveData<UniversityList?> = MutableLiveData()
+
+//    var universityList: MutableLiveData<UniversityList?> = MutableLiveData()
     var university: MutableLiveData<University> = MutableLiveData()
 
-    fun newUniversity(university: University) {
-        var listTmp = (universityList.value ?: UniversityList()).apply {
-            items.add(university)
-        }
-        universityList.postValue(listTmp)
-        setCurrentUniversity(university)
-    }
+//    fun newUniversity(university: University) {
+//        var listTmp = (universityList.value ?: UniversityList()).apply {
+//            items.add(university)
+//        }
+//        universityList.postValue(listTmp)
+//        setCurrentUniversity(university)
+//    }
 
     fun setCurrentUniversity(_university: University) {
         university.postValue(_university)
@@ -56,15 +64,15 @@ class UniversityRepository private constructor() {
 
     fun getUniversityPosition() = getUniversityPosition(university.value ?: University())
 
-    fun updateUniversity(university: University) {
-        val position = getUniversityPosition(university)
-        if (position < 0) newUniversity(university)
-        else {
-            val listTmp = universityList.value!!
-            listTmp.items[position] = university
-            universityList.postValue(listTmp)
-        }
-    }
+//    fun updateUniversity(university: University) {
+//        val position = getUniversityPosition(university)
+//        if (position < 0) newUniversity(university)
+//        else {
+//            val listTmp = universityList.value!!
+//            listTmp.items[position] = university
+//            universityList.postValue(listTmp)
+//        }
+//    }
 
     fun deleteUniversity(university: University) {
         val listTmp = universityList.value!!
@@ -171,4 +179,25 @@ class UniversityRepository private constructor() {
         setCurrentFaculty(0)
     }
 
+    private val universityDB by lazy {DBRepository(UniversityDB.getDatabase(Application352.context).universityDAO())}
+    private val myCoroutineScope = CoroutineScope(Dispatchers.Main)
+
+    fun onDestroy(){
+        myCoroutineScope.cancel()
+    }
+
+    val universityList: LiveData<List<University>> = universityDB.getUniversities().asLiveData()
+
+    fun newUniversity(university: University){
+        myCoroutineScope.launch {
+            universityDB.insertUniversity(university)
+            setCurrentUniversity(university)
+        }
+    }
+
+    fun updateUniversity(university: University){
+        myCoroutineScope.launch {
+            universityDB.updateUniversity(university)
+        }
+    }
 }
