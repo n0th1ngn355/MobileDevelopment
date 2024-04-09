@@ -31,7 +31,6 @@ abstract class UniversityDB: RoomDatabase() {
                 buildDatabase(context).also{ INSTANCE=it}
             }
         }
-    }
 
 //    val MIGRAION_2_3 = object : Migration(2,3){
 //        override fun migrate(db: SupportSQLiteDatabase) {
@@ -46,5 +45,6 @@ abstract class UniversityDB: RoomDatabase() {
         .fallbackToDestructiveMigration()
 //        .addMigrations(MIGRATION_2_3)
         .build()
-    
+
+    }
 }

@@ -20,11 +20,11 @@ class FacultyListViewModel : ViewModel() {
     val university
         get() = UniversityRepository.getInstance().university.value
 
-    private val facultyListObserver = Observer<FacultyList?>{
+    private val facultyListObserver = Observer<List<Faculty>>{
             list ->
         facultyList.postValue(
             FacultyList().apply {
-                items=list?.items?.filter { it.universityID==university?.id } as MutableList<Faculty>
+                items=list.filter { it.universityID==university?.id } as MutableList<Faculty>
             }
         )
     }

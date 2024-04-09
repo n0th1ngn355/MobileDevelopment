@@ -35,9 +35,30 @@ class UniversityRepository private constructor() {
         }
     }
 
+    private val universityDB by lazy {DBRepository(UniversityDB.getDatabase(Application352.context).universityDAO())}
+    private val myCoroutineScope = CoroutineScope(Dispatchers.Main)
 
 //    var universityList: MutableLiveData<UniversityList?> = MutableLiveData()
     var university: MutableLiveData<University> = MutableLiveData()
+    val universityList: LiveData<List<University>> = universityDB.getUniversities().asLiveData()
+
+
+    fun onDestroy(){
+        myCoroutineScope.cancel()
+    }
+
+    fun newUniversity(university: University){
+        myCoroutineScope.launch {
+            universityDB.insertUniversity(university)
+            setCurrentUniversity(university)
+        }
+    }
+
+    fun updateUniversity(university: University){
+        myCoroutineScope.launch {
+            universityDB.updateUniversity(university)
+        }
+    }
 
 //    fun newUniversity(university: University) {
 //        var listTmp = (universityList.value ?: UniversityList()).apply {
@@ -52,13 +73,13 @@ class UniversityRepository private constructor() {
     }
 
     fun setCurrentUniversity(position: Int) {
-        if (universityList.value == null || position < 0 || (universityList.value?.items?.size!! <= position))
+        if (universityList.value == null || position < 0 || (universityList.value?.size!! <= position))
             return
-        setCurrentUniversity(universityList.value?.items!![position])
+        setCurrentUniversity(universityList.value!![position])
     }
 
     fun getUniversityPosition(university: University): Int =
-        universityList.value?.items?.indexOfFirst {
+        universityList.value?.indexOfFirst {
             it.id == university.id
         } ?: 1
 
@@ -75,74 +96,73 @@ class UniversityRepository private constructor() {
 //    }
 
     fun deleteUniversity(university: University) {
-        val listTmp = universityList.value!!
-        if (listTmp.items.remove(university)) {
-            universityList.postValue(listTmp)
+        myCoroutineScope.launch {
+            universityDB.deleteUniversity(university)
         }
+        setCurrentFaculty(0)
         setCurrentUniversity(0)
     }
 
-    fun saveData() {
-        val context = Application352.context
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        sharedPreferences.edit().apply() {
-            val gson = Gson()
-            val lst = universityList.value?.items ?: listOf<University>()
-            val jsonString = gson.toJson(lst)
-            Log.d(TAG, "Сохранение $jsonString")
-            putString(context.getString(R.string.preference_key_university_list), jsonString)
-            putString(
-                context.getString(R.string.preference_key_faculty_list),
-                gson.toJson(facultyList.value?.items ?: listOf<Faculty>())
-            )
-            apply()
-        }
+//    fun saveData() {
+//        val context = Application352.context
+//        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+//        sharedPreferences.edit().apply() {
+//            val gson = Gson()
+//            val lst = universityList.value?.items ?: listOf<University>()
+//            val jsonString = gson.toJson(lst)
+//            Log.d(TAG, "Сохранение $jsonString")
+//            putString(context.getString(R.string.preference_key_university_list), jsonString)
+//            putString(
+//                context.getString(R.string.preference_key_faculty_list),
+//                gson.toJson(facultyList.value?.items ?: listOf<Faculty>())
+//            )
+//            apply()
+//        }
+//
+//    }
+//
+//    fun loadData() {
+//        val context = Application352.context
+//        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+//        sharedPreferences.apply {
+//            var jsonString =
+//                getString(context.getString(R.string.preference_key_university_list), null)
+//            if (jsonString != null) {
+//                Log.d(TAG, "Чтение University $jsonString")
+//                val listType = object : TypeToken<List<University>>() {}.type
+//                val tempList = Gson().fromJson<List<University>>(jsonString, listType)
+//                val temp = UniversityList()
+//                temp.items = tempList.toMutableList()
+//                Log.d(TAG, "Загрузка University ${temp.toString()}")
+//                universityList.value = temp
+//                setCurrentUniversity(0)
+//            }
+//
+//            jsonString =
+//                getString(context.getString(R.string.preference_key_faculty_list), null)
+//            if (jsonString != null) {
+//                Log.d(TAG, "Чтение Faculty $jsonString")
+//                val listType = object : TypeToken<List<Faculty>>() {}.type
+//                val tempList = Gson().fromJson<List<Faculty>>(jsonString, listType)
+//                val temp = FacultyList()
+//                temp.items = tempList.toMutableList()
+//                Log.d(TAG, "Загрузка Faculty ${temp.toString()}")
+//                facultyList.value = temp
+//                setCurrentFaculty(0)
+//            }
+//        }
+//
+//    }
 
-    }
 
-    fun loadData() {
-        val context = Application352.context
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        sharedPreferences.apply {
-            var jsonString =
-                getString(context.getString(R.string.preference_key_university_list), null)
-            if (jsonString != null) {
-                Log.d(TAG, "Чтение University $jsonString")
-                val listType = object : TypeToken<List<University>>() {}.type
-                val tempList = Gson().fromJson<List<University>>(jsonString, listType)
-                val temp = UniversityList()
-                temp.items = tempList.toMutableList()
-                Log.d(TAG, "Загрузка University ${temp.toString()}")
-                universityList.value = temp
-                setCurrentUniversity(0)
-            }
-
-            jsonString =
-                getString(context.getString(R.string.preference_key_faculty_list), null)
-            if (jsonString != null) {
-                Log.d(TAG, "Чтение Faculty $jsonString")
-                val listType = object : TypeToken<List<Faculty>>() {}.type
-                val tempList = Gson().fromJson<List<Faculty>>(jsonString, listType)
-                val temp = FacultyList()
-                temp.items = tempList.toMutableList()
-                Log.d(TAG, "Загрузка Faculty ${temp.toString()}")
-                facultyList.value = temp
-                setCurrentFaculty(0)
-            }
-        }
-
-    }
-
-
-    var facultyList: MutableLiveData<FacultyList?> = MutableLiveData()
+    var facultyList: LiveData<List<Faculty>> = universityDB.getFaculties().asLiveData()
     var faculty: MutableLiveData<Faculty> = MutableLiveData()
 
     fun newFaculty(faculty: Faculty) {
-        var listTmp = (facultyList.value ?: FacultyList()).apply {
-            items.add(faculty)
+        myCoroutineScope.launch {
+            universityDB.insertFaculty(faculty)
+            setCurrentFaculty(faculty)
         }
-        facultyList.postValue(listTmp)
-        setCurrentFaculty(faculty)
     }
 
     fun setCurrentFaculty(_faculty: Faculty) {
@@ -150,54 +170,26 @@ class UniversityRepository private constructor() {
     }
 
     fun setCurrentFaculty(position: Int) {
-        if (facultyList.value == null || position < 0 || (facultyList.value?.items?.size!! <= position))
+        if (facultyList.value == null || position < 0 || (facultyList.value?.size!! <= position))
             return
-        setCurrentFaculty(facultyList.value?.items!![position])
+        setCurrentFaculty(facultyList.value!![position])
     }
 
-    fun getFacultyPosition(faculty: Faculty): Int = facultyList.value?.items?.indexOfFirst {
+    fun getFacultyPosition(faculty: Faculty): Int = facultyList.value?.indexOfFirst {
         it.id == faculty.id
     } ?: 1
 
     fun getFacultyPosition() = getFacultyPosition(faculty.value ?: Faculty())
 
     fun updateFaculty(faculty: Faculty) {
-        val position = getFacultyPosition(faculty)
-        if (position < 0) newFaculty(faculty)
-        else {
-            val listTmp = facultyList.value!!
-            listTmp.items[position] = faculty
-            facultyList.postValue(listTmp)
-        }
+        newFaculty(faculty)
     }
 
     fun deleteFaculty(faculty: Faculty) {
-        val listTmp = facultyList.value!!
-        if (listTmp.items.remove(faculty)) {
-            facultyList.postValue(listTmp)
+        myCoroutineScope.launch {
+            universityDB.deleteFaculty(faculty)
         }
         setCurrentFaculty(0)
     }
 
-    private val universityDB by lazy {DBRepository(UniversityDB.getDatabase(Application352.context).universityDAO())}
-    private val myCoroutineScope = CoroutineScope(Dispatchers.Main)
-
-    fun onDestroy(){
-        myCoroutineScope.cancel()
-    }
-
-    val universityList: LiveData<List<University>> = universityDB.getUniversities().asLiveData()
-
-    fun newUniversity(university: University){
-        myCoroutineScope.launch {
-            universityDB.insertUniversity(university)
-            setCurrentUniversity(university)
-        }
-    }
-
-    fun updateUniversity(university: University){
-        myCoroutineScope.launch {
-            universityDB.updateUniversity(university)
-        }
-    }
 }

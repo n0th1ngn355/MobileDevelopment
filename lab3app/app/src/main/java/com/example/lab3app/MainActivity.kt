@@ -90,10 +90,10 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
         }
     }
 
-    override fun onStop() {
-        UniversityRepository.getInstance().saveData()
-        super.onStop()
-    }
+//    override fun onStop() {
+//        UniversityRepository.getInstance().saveData()
+//        super.onStop()
+//    }
 
     override fun setTitle(_title: String) {
         title = _title

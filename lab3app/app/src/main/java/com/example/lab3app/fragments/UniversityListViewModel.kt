@@ -1,5 +1,6 @@
 package com.example.lab3app.fragments
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -8,20 +9,20 @@ import com.example.lab3app.data.UniversityList
 import com.example.lab3app.repository.UniversityRepository
 
 class UniversityListViewModel: ViewModel() {
-    var universityList: MutableLiveData<UniversityList> = MutableLiveData()
+    var universityList: LiveData<List<University>> = UniversityRepository.getInstance().universityList
 
     private var _university: University? = null
 
     val university
         get() = _university
 
-    private val universityListObserver = Observer<UniversityList?>{
-        list ->
-        universityList.postValue(list!!)
-    }
+//    private val universityListObserver = Observer<List<University>>{
+//        list ->
+//        universityList.postValue(list!!)
+//    }
 
     init{
-        UniversityRepository.getInstance().universityList.observeForever(universityListObserver)
+//        UniversityRepository.getInstance().universityList.observeForever(universityListObserver)
         UniversityRepository.getInstance().university.observeForever{
             _university = it
         }
