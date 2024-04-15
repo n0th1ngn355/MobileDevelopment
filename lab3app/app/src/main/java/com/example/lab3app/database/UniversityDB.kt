@@ -8,12 +8,14 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.lab3app.data.Faculty
+import com.example.lab3app.data.Group
+import com.example.lab3app.data.Student
 import com.example.lab3app.data.University
 
 
 @Database(
-    entities = [University::class, Faculty::class],
-    version = 1,
+    entities = [University::class, Faculty::class, Group::class, Student::class],
+    version = 2,
     exportSchema = false
 )
 

@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.lab3app.data.Faculty
+import com.example.lab3app.data.Group
+import com.example.lab3app.data.Student
 import com.example.lab3app.data.University
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
@@ -19,8 +21,8 @@ interface UniversityDAO {
     @Insert(entity = University::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUniversity(university: University)
 
-    @Update(entity = University::class)
-    suspend fun updateUniversity(university: University)
+//    @Update(entity = University::class)
+//    suspend fun updateUniversity(university: University)
 
     @Insert(entity = University::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListUniversity(universityList: List<University>)
@@ -42,8 +44,8 @@ interface UniversityDAO {
     @Insert(entity = Faculty::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFaculty(faculty: Faculty)
 
-    @Update(entity = Faculty::class)
-    suspend fun updateFaculty(faculty: Faculty)
+//    @Update(entity = Faculty::class)
+//    suspend fun updateFaculty(faculty: Faculty)
 
     @Insert(entity = Faculty::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListFaculty(facultyList: List<Faculty>)
@@ -56,4 +58,41 @@ interface UniversityDAO {
 
     @Query("delete from faculties")
     suspend fun deleteAllFaculties()
+
+
+
+
+
+    @Query("select * from groups order by group_name")
+    fun getAllGroups(): Flow<List<Group>>
+
+    @Query("select * from groups where faculty_id=:facultyID")
+    fun getFacultyGroups(facultyID: UUID): Flow<List<Group>>
+
+    @Insert(entity = Group::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGroup(group: Group)
+
+    @Delete(entity = Group::class)
+    suspend fun deleteGroup(group: Group)
+
+    @Query("delete from groups")
+    suspend fun deleteAllGroups()
+
+
+
+    @Query("select * from students order by firstName")
+    fun getAllStudents(): Flow<List<Student>>
+
+    @Query("select * from students where group_id=:groupID")
+    fun getGroupStudents(groupID: UUID): Flow<List<Student>>
+
+    @Insert(entity = Student::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertStudent(student: Student)
+
+    @Delete(entity = Student::class)
+    suspend fun deleteStudent(student: Student)
+
+    @Query("delete from students")
+    suspend fun deleteAllStudents()
+
 }

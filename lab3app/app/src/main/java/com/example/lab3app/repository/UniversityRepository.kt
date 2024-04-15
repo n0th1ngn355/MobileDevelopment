@@ -10,6 +10,8 @@ import com.example.lab3app.Application352
 import com.example.lab3app.R
 import com.example.lab3app.data.Faculty
 import com.example.lab3app.data.FacultyList
+import com.example.lab3app.data.Group
+import com.example.lab3app.data.Student
 import com.example.lab3app.data.University
 import com.example.lab3app.data.UniversityList
 import com.example.lab3app.database.UniversityDB
@@ -56,7 +58,7 @@ class UniversityRepository private constructor() {
 
     fun updateUniversity(university: University){
         myCoroutineScope.launch {
-            universityDB.updateUniversity(university)
+            universityDB.insertUniversity(university)
         }
     }
 
@@ -190,6 +192,91 @@ class UniversityRepository private constructor() {
             universityDB.deleteFaculty(faculty)
         }
         setCurrentFaculty(0)
+    }
+
+
+
+
+
+
+
+
+    var groupList: LiveData<List<Group>> = universityDB.getAllGroups().asLiveData()
+    var group: MutableLiveData<Group> = MutableLiveData()
+
+    fun newGroup(group: Group) {
+        myCoroutineScope.launch {
+            universityDB.insertGroup(group)
+            setCurrentGroup(group)
+        }
+    }
+
+    fun setCurrentGroup(_group: Group) {
+        group.postValue(_group)
+    }
+
+    fun setCurrentGroup(position: Int) {
+        if (groupList.value == null || position < 0 || (groupList.value?.size!! <= position))
+            return
+        setCurrentGroup(groupList.value!![position])
+    }
+
+    fun getGroupPosition(group: Group): Int = groupList.value?.indexOfFirst {
+        it.id == group.id
+    } ?: 1
+
+    fun getGroupPosition() = getGroupPosition(group.value ?: Group())
+
+    fun updateGroup(group: Group) {
+        newGroup(group)
+    }
+
+    fun deleteGroup(group: Group) {
+        myCoroutineScope.launch {
+            universityDB.deleteGroup(group)
+        }
+        setCurrentGroup(0)
+    }
+
+
+
+
+
+    var studentList: LiveData<List<Student>> = universityDB.getAllStudents().asLiveData()
+    var student: MutableLiveData<Student> = MutableLiveData()
+
+    fun newStudent(student: Student) {
+        myCoroutineScope.launch {
+            universityDB.insertStudent(student)
+            setCurrentStudent(student)
+        }
+    }
+
+    fun setCurrentStudent(_student: Student) {
+        student.postValue(_student)
+    }
+
+    fun setCurrentStudent(position: Int) {
+        if (studentList.value == null || position < 0 || (studentList.value?.size!! <= position))
+            return
+        setCurrentStudent(studentList.value!![position])
+    }
+
+    fun getStudentPosition(student: Student): Int = studentList.value?.indexOfFirst {
+        it.id == student.id
+    } ?: 1
+
+    fun getStudentPosition() = getStudentPosition(student.value ?: Student())
+
+    fun updateStudent(student: Student) {
+        newStudent(student)
+    }
+
+    fun deleteStudent(student: Student) {
+        myCoroutineScope.launch {
+            universityDB.deleteStudent(student)
+        }
+        setCurrentStudent(0)
     }
 
 }
