@@ -275,8 +275,8 @@ class UniversityRepository private constructor() {
     fun deleteStudent(student: Student) {
         myCoroutineScope.launch {
             universityDB.deleteStudent(student)
+            setCurrentStudent(0)
         }
-        setCurrentStudent(0)
     }
 
 }
