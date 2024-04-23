@@ -62,4 +62,5 @@ class StudentsViewModel : ViewModel() {
     fun setCurrentStudent(student: Student){
         UniversityRepository.getInstance().setCurrentStudent(student)
     }
+
 }

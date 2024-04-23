@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import com.example.lab3app.data.Student
 import com.example.lab3app.fragments.FacultyListFragment
 import com.example.lab3app.fragments.UniversityListFragment
 import com.example.lab3app.fragments.UpdateActivity
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
     companion object {
         const val universityID = 0
         const val facultyId = 1
+        const val groupID = 2
+        const val studentID = 3
     }
 
 
@@ -100,16 +103,11 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
     }
 
     private var currentFragmentID = -1
-    override fun setFragment(fragmentID: Int) {
+    override fun setFragment(fragmentID: Int, student: Student?) {
         currentFragmentID = fragmentID
         when (fragmentID) {
-            universityID -> {
-                setFragment(UniversityListFragment.getInstance())
-            }
-
-            facultyId -> {
-                setFragment(FacultyListFragment.getInstance())
-            }
+            universityID -> setFragment(UniversityListFragment.getInstance())
+            facultyId -> setFragment(FacultyListFragment.getInstance())
         }
     }
 
