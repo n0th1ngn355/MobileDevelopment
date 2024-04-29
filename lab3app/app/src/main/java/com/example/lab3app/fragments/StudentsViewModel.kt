@@ -16,7 +16,7 @@ class StudentsViewModel : ViewModel() {
 
     var group: Group? = null
 
-    fun setGroup(group: Group){
+    fun set_Group(group: Group){
         this.group = group
         UniversityRepository.getInstance().studentList.observeForever{
             studentList.postValue(

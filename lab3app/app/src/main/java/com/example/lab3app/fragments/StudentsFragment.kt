@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Update
 import com.example.lab3app.MainActivity
-import com.example.lab3app.Manifest
 import com.example.lab3app.R
 import com.example.lab3app.data.Group
 import com.example.lab3app.data.Student
@@ -61,7 +60,7 @@ class StudentsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(StudentsViewModel::class.java)
-        viewModel.setGroup(group)
+        viewModel.set_Group(group)
         viewModel.studentList.observe(viewLifecycleOwner){
             binding.rvStudents.adapter = StudentAdapter(it)
         }
@@ -130,10 +129,10 @@ class StudentsFragment : Fragment() {
                 val tv=itemView.findViewById<TextView>(R.id.tvStudentName)
                 tv.text=student.shortName
                 val cl=itemView.findViewById<ConstraintLayout>(R.id.clStudent)
-                cl.setOnClickListener(
+                cl.setOnClickListener {
                     viewModel.setCurrentStudent(student)
                     updateCurrentView(itemView)
-                )
+                }
                 itemView.findViewById<ImageButton>(R.id.ibEditStudent).setOnClickListener{
                     editStudent(student)
                 }
@@ -144,7 +143,7 @@ class StudentsFragment : Fragment() {
 
                 val llb = itemView.findViewById<LinearLayout>(R.id.llStudentButtons)
                 llb.visibility=View.INVISIBLE
-                llb?.layoutParams=llb?.layoutParams.apply { this.width=1 }
+                llb?.layoutParams=llb?.layoutParams.apply { this!!.width=1 }
                 val ib=itemView.findViewById<ImageButton>(R.id.ibCall)
                 ib.visibility=View.INVISIBLE
                 cl.setOnLongClickListener{
@@ -169,11 +168,11 @@ class StudentsFragment : Fragment() {
                     true
                 }
                 itemView.findViewById<ImageButton>(R.id.ibCall).setOnClickListener{
-                    if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE)==PackageManager.PERMISSION_GRANTED){
+                    if(ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE)==PackageManager.PERMISSION_GRANTED){
                         val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${student.phone}"))
                         startActivity(intent)
                     }else{
-                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), 2)
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CALL_PHONE), 2)
                     }
                 }
             }
