@@ -22,10 +22,10 @@ class GroupsViewModel : ViewModel() {
         }
 
         UniversityRepository.getInstance().faculty.observeForever{
-            groupList.postValue(
-                UniversityRepository.getInstance().groupList.value?.filter
-                {it.facultyID== UniversityRepository.getInstance().faculty.value?.id}?.sortedBy { it.name } as MutableList<Group>
-            )
+            val temp = UniversityRepository.getInstance().groupList.value?.filter {
+                it.facultyID == UniversityRepository.getInstance().faculty.value?.id}?.sortedBy { it.name }
+
+            groupList.postValue( temp ?: listOf())
         }
     }
 

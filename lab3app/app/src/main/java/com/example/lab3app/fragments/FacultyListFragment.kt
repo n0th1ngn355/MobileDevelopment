@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lab3app.MainActivity
 import com.example.lab3app.R
 import com.example.lab3app.data.Faculty
 import com.example.lab3app.databinding.FragmentFacultyListBinding
@@ -170,6 +171,7 @@ class FacultyListFragment : Fragment() {
                 val cl = View.OnClickListener {
                     viewModel.setCurrentFaculty(faculty)
                     updateCurrentView(itemView)
+                    (requireActivity() as UpdateActivity).setFragment(MainActivity.groupID)
                 }
 
                 c_l.setOnClickListener(cl)

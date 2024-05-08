@@ -8,8 +8,21 @@
         android:title="Добавить университет" />
     <item
         android:id="@+id/miUpdateUniversity"
-        android:title="Изменить" />
+        android:title="Изменить университет" />
     <item
         android:id="@+id/miDeleteUniversity"
-        android:title="Удалить" />
+        android:title="Удалить университет" />
+
+
+    <item
+        android:id="@+id/miNewGroup"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Добавить группу" />
+    <item
+        android:id="@+id/miUpdateGroup"
+        android:title="Изменить группу" />
+    <item
+        android:id="@+id/miDeleteGroup"
+        android:title="Удалить группу" />
+
 </menu>
