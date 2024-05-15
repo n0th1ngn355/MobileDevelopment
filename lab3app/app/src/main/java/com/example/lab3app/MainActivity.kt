@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.lab3app.data.Student
 import com.example.lab3app.fragments.FacultyListFragment
 import com.example.lab3app.fragments.GroupsFragment
+import com.example.lab3app.fragments.StudentFragment
 import com.example.lab3app.fragments.UniversityListFragment
 import com.example.lab3app.fragments.UpdateActivity
 import com.example.lab3app.repository.UniversityRepository
@@ -54,7 +55,11 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
                     }
                     groupID->{
                         currentFragmentID= facultyId
-                        setTitle("Список факультетов")
+//                        setTitle("Список факультетов")
+                    }
+                    studentID->{
+                        currentFragmentID= groupID
+//                        setTitle("Список факультетов")
                     }
                     else ->{}
                 }
@@ -65,7 +70,7 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
             }
         }
         setFragment(universityID)
-
+//        updateMenuView()
 //        supportFragmentManager.beginTransaction()
 //            .replace(R.id.fcwMain, UniversityListFragment.getInstance()).commit()
     }
@@ -140,6 +145,7 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
             universityID -> setFragment(UniversityListFragment.getInstance())
             facultyId -> setFragment(FacultyListFragment.getInstance())
             groupID -> setFragment(GroupsFragment.getInstance())
+            studentID -> setFragment(StudentFragment.newInstance(student ?: Student()))
         }
     }
 

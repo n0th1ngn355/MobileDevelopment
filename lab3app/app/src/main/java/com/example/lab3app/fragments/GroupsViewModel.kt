@@ -14,7 +14,7 @@ class GroupsViewModel : ViewModel() {
     init {
         UniversityRepository.getInstance().groupList.observeForever{
             groupList.postValue(
-                it.filter { it.facultyID==UniversityRepository.getInstance().faculty.value?.id }.sortedBy { it.name } as MutableList<Group>
+                it.filter { it.facultyID==UniversityRepository.getInstance().faculty.value?.id }.sortedBy { it.name }
             )
         }
         UniversityRepository.getInstance().group.observeForever{

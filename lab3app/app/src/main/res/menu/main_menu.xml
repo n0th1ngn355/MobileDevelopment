@@ -13,7 +13,6 @@
         android:id="@+id/miDeleteUniversity"
         android:title="Удалить университет" />
 
-
     <item
         android:id="@+id/miNewGroup"
         android:icon="@android:drawable/ic_input_add"

@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.lab3app.MainActivity
@@ -106,15 +108,44 @@ class GroupsFragment : Fragment(), MainActivity.Edit {
     }
 
     override fun append() {
-        editGroup()
+        val mDialogView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.dialog_university_edit, null)
+        val inputName = mDialogView.findViewById<EditText>(R.id.etName)
+        mDialogView.findViewById<EditText>(R.id.etCity).visibility=View.GONE
+        mDialogView.findViewById<TextView>(R.id.tvCity).visibility=View.GONE
+        AlertDialog.Builder(requireContext())
+            .setTitle("Информация о группе")
+            .setView(mDialogView)
+            .setPositiveButton("Добавить") { _, _ ->
+                if (inputName.text.isNotBlank()) {
+                    viewModel.appendGroup(inputName.text.toString())
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .setCancelable(true)
+            .create()
+            .show()
     }
 
     override fun update() {
-        editGroup(viewModel.group?.name ?: "")
-    }
-
-    private fun editGroup(groupName: String = "") {
-
+        val mDialogView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.dialog_university_edit, null)
+        val inputName = mDialogView.findViewById<EditText>(R.id.etName)
+        mDialogView.findViewById<EditText>(R.id.etCity).visibility=View.GONE
+        mDialogView.findViewById<TextView>(R.id.tvCity).visibility=View.GONE
+        inputName.setText(viewModel.group?.name ?: "")
+        AlertDialog.Builder(requireContext())
+            .setTitle("Изменить информацию о группе")
+            .setView(mDialogView)
+            .setPositiveButton("Изменить") { _, _ ->
+                if (inputName.text.isNotBlank()) {
+                    viewModel.updateGroup(inputName.text.toString())
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .setCancelable(true)
+            .create()
+            .show()
     }
 
     override fun delete() {

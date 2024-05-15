@@ -66,6 +66,7 @@ class StudentsFragment : Fragment() {
         }
         binding.fabNewStudent.setOnClickListener{
             editStudent(Student().apply { groupID = viewModel.group!!.id })
+            (requireActivity() as UpdateActivity).setTitle("Группа ${group.name}")
         }
     }
 
@@ -135,6 +136,8 @@ class StudentsFragment : Fragment() {
                 }
                 itemView.findViewById<ImageButton>(R.id.ibEditStudent).setOnClickListener{
                     editStudent(student)
+                    (requireActivity() as UpdateActivity).setTitle("Группа ${group.name}")
+
                 }
 
                 itemView.findViewById<ImageButton>(R.id.ibDeleteStudent).setOnClickListener{
