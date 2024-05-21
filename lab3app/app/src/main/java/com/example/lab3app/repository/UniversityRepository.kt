@@ -6,6 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.preference.PreferenceManager
+import com.example.lab3app.API.APPEND_UNIVERSITY
+import com.example.lab3app.API.DELETE_UNIVERSITY
+import com.example.lab3app.API.PostResult
+import com.example.lab3app.API.UPDATE_UNIVERSITY
+import com.example.lab3app.API.UniversityAPI
+import com.example.lab3app.API.UniversityConnection
+import com.example.lab3app.API.UniversityPost
+import com.example.lab3app.API.UniversityResponse
 import com.example.lab3app.Application352
 import com.example.lab3app.R
 import com.example.lab3app.data.Faculty
@@ -21,6 +29,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 const val TAG = "com.example.lab3app.TAG"
 
@@ -49,18 +60,26 @@ class UniversityRepository private constructor() {
         myCoroutineScope.cancel()
     }
 
-    fun newUniversity(university: University){
-        myCoroutineScope.launch {
-            universityDB.insertUniversity(university)
-            setCurrentUniversity(university)
-        }
-    }
+//    fun newUniversity(university: University){
+//        myCoroutineScope.launch {
+//            universityDB.insertUniversity(university)
+//            setCurrentUniversity(university)
+//        }
+//    }
+//
+//    fun updateUniversity(university: University){
+//        myCoroutineScope.launch {
+//            universityDB.insertUniversity(university)
+//        }
+//    }
 
-    fun updateUniversity(university: University){
-        myCoroutineScope.launch {
-            universityDB.insertUniversity(university)
-        }
-    }
+//    fun deleteUniversity(university: University) {
+//        myCoroutineScope.launch {
+//            universityDB.deleteUniversity(university)
+//        }
+//        setCurrentFaculty(0)
+//        setCurrentUniversity(0)
+//    }
 
 //    fun newUniversity(university: University) {
 //        var listTmp = (universityList.value ?: UniversityList()).apply {
@@ -97,13 +116,6 @@ class UniversityRepository private constructor() {
 //        }
 //    }
 
-    fun deleteUniversity(university: University) {
-        myCoroutineScope.launch {
-            universityDB.deleteUniversity(university)
-        }
-        setCurrentFaculty(0)
-        setCurrentUniversity(0)
-    }
 
 //    fun saveData() {
 //        val context = Application352.context
@@ -279,4 +291,57 @@ class UniversityRepository private constructor() {
         }
     }
 
+
+
+    private var universityAPI = UniversityConnection.getClient().create(UniversityAPI::class.java)
+
+    fun fetchUniversity(){
+        universityAPI.getUniversities().enqueue(object : retrofit2.Callback<UniversityResponse>{
+            override fun onFailure(call: Call<UniversityResponse>, t: Throwable) {
+                Log.d(TAG, "Ошибка получения списка университетов", t)
+            }
+
+            override fun onResponse(call: Call<UniversityResponse>, response: Response<UniversityResponse>) {
+                if (response.code() == 200){
+                    val universities = response.body()
+                    val items = universities?.items ?: emptyList()
+                    Log.d(TAG, "Получен список университетов $items")
+                    myCoroutineScope.launch {
+                        universityDB.deleteAllUniversities()
+                        for(f in items){
+                            universityDB.insertUniversity(f)
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+
+    private fun updateUniversity(universityPost: UniversityPost){
+        universityAPI.postUniversity(universityPost)
+            .enqueue(object: retrofit2.Callback<PostResult>{
+                override fun onResponse(call: Call<PostResult>, response: Response<PostResult>) {
+                    if(response.code() == 200) fetchUniversity()
+                }
+
+                override fun onFailure(call: Call<PostResult>, t: Throwable) {
+                    Log.d(TAG, "Ошибка изменения списка университетов", t)
+                }
+            })
+    }
+
+    fun newUniversity(university: University){
+        updateUniversity(UniversityPost(APPEND_UNIVERSITY, university))
+    }
+    fun deleteUniversity(university: University){
+        updateUniversity(UniversityPost(DELETE_UNIVERSITY, university))
+    }
+    fun updateUniversity(university: University){
+        updateUniversity(UniversityPost(UPDATE_UNIVERSITY, university))
+    }
+
+    fun loadData(){
+        fetchUniversity()
+    }
 }

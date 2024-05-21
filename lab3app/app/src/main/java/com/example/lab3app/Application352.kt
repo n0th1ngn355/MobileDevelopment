@@ -8,7 +8,7 @@ import com.example.lab3app.repository.UniversityRepository
 class Application352: Application() {
     override fun onCreate() {
         super.onCreate()
-//        UniversityRepository.getInstance().loadData()
+        UniversityRepository.getInstance().loadData()
     }
 
 

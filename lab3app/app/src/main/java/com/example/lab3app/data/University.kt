@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import java.util.UUID
 
 @Entity(
@@ -12,6 +13,6 @@ import java.util.UUID
 
 data class University(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
-    @ColumnInfo(name="university_name") var name: String = "",
+    @SerializedName("university_name") @ColumnInfo(name="university_name") var name: String = "",
     var city: String = ""
 )
