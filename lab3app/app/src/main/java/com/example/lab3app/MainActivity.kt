@@ -55,11 +55,11 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
                     }
                     groupID->{
                         currentFragmentID= facultyId
-//                        setTitle("Список факультетов")
+                        setTitle("Список факультетов")
                     }
                     studentID->{
                         currentFragmentID= groupID
-//                        setTitle("Список факультетов")
+                        setTitle("Список групп")
                     }
                     else ->{}
                 }
@@ -84,6 +84,9 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
         _miNewGroup = menu?.findItem(R.id.miNewGroup)
         _miUpdateGroup = menu?.findItem(R.id.miUpdateGroup)
         _miDeleteGroup = menu?.findItem(R.id.miDeleteGroup)
+        _miNewGroup?.isVisible = false
+        _miUpdateGroup?.isVisible = false
+        _miDeleteGroup?.isVisible = false
 
         return true
     }
@@ -138,7 +141,7 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
         title = _title
     }
 
-    private var currentFragmentID = -1
+    private var currentFragmentID = 0
     override fun setFragment(fragmentID: Int, student: Student?) {
         currentFragmentID = fragmentID
         when (fragmentID) {
@@ -155,11 +158,11 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
     }
 
     private fun updateMenuView(){
-        _miNewUniversity?.isVisible=currentFragmentID==universityID
-        _miDeleteUniversity?.isVisible=currentFragmentID==universityID
-        _miUpdateUniversity?.isVisible=currentFragmentID==universityID
-        _miNewGroup?.isVisible=currentFragmentID==groupID
-        _miDeleteGroup?.isVisible=currentFragmentID==groupID
-        _miUpdateGroup?.isVisible=currentFragmentID==groupID
+        _miNewUniversity?.isVisible=(currentFragmentID==universityID)
+        _miDeleteUniversity?.isVisible=(currentFragmentID==universityID)
+        _miUpdateUniversity?.isVisible=(currentFragmentID==universityID)
+        _miNewGroup?.isVisible=(currentFragmentID==groupID)
+        _miDeleteGroup?.isVisible=(currentFragmentID==groupID)
+        _miUpdateGroup?.isVisible=(currentFragmentID==groupID)
     }
 }

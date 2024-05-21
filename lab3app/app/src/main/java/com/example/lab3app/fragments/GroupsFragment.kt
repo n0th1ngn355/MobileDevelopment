@@ -55,7 +55,7 @@ class GroupsFragment : Fragment(), MainActivity.Edit {
             createUI(it)
         }
     }
-
+    
     private inner class GroupPageAdapter(fa: FragmentActivity, private val groups: List<Group>?): FragmentStateAdapter(fa){
         override fun getItemCount(): Int {
             return (groups?.size ?: 0)
@@ -98,11 +98,10 @@ class GroupsFragment : Fragment(), MainActivity.Edit {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
+
             }
         })
     }
