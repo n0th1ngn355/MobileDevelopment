@@ -7,13 +7,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.preference.PreferenceManager
 import com.example.lab3app.API.APPEND_FACULTY
+import com.example.lab3app.API.APPEND_GROUP
+import com.example.lab3app.API.APPEND_STUDENT
 import com.example.lab3app.API.APPEND_UNIVERSITY
 import com.example.lab3app.API.DELETE_FACULTY
+import com.example.lab3app.API.DELETE_GROUP
+import com.example.lab3app.API.DELETE_STUDENT
 import com.example.lab3app.API.DELETE_UNIVERSITY
 import com.example.lab3app.API.FacultyPost
 import com.example.lab3app.API.FacultyResponse
+import com.example.lab3app.API.GroupPost
+import com.example.lab3app.API.GroupResponse
 import com.example.lab3app.API.PostResult
+import com.example.lab3app.API.StudentPost
+import com.example.lab3app.API.StudentResponse
 import com.example.lab3app.API.UPDATE_FACULTY
+import com.example.lab3app.API.UPDATE_GROUP
+import com.example.lab3app.API.UPDATE_STUDENT
 import com.example.lab3app.API.UPDATE_UNIVERSITY
 import com.example.lab3app.API.UniversityAPI
 import com.example.lab3app.API.UniversityConnection
@@ -222,12 +232,12 @@ class UniversityRepository private constructor() {
     var groupList: LiveData<List<Group>> = universityDB.getAllGroups().asLiveData()
     var group: MutableLiveData<Group> = MutableLiveData()
 
-    fun newGroup(group: Group) {
-        myCoroutineScope.launch {
-            universityDB.insertGroup(group)
-            setCurrentGroup(group)
-        }
-    }
+//    fun newGroup(group: Group) {
+//        myCoroutineScope.launch {
+//            universityDB.insertGroup(group)
+//            setCurrentGroup(group)
+//        }
+//    }
 
     fun setCurrentGroup(_group: Group) {
         group.postValue(_group)
@@ -245,16 +255,16 @@ class UniversityRepository private constructor() {
 
     fun getGroupPosition() = getGroupPosition(group.value ?: Group())
 
-    fun updateGroup(group: Group) {
-        newGroup(group)
-    }
-
-    fun deleteGroup(group: Group) {
-        myCoroutineScope.launch {
-            universityDB.deleteGroup(group)
-        }
-        setCurrentGroup(0)
-    }
+//    fun updateGroup(group: Group) {
+//        newGroup(group)
+//    }
+//
+//    fun deleteGroup(group: Group) {
+//        myCoroutineScope.launch {
+//            universityDB.deleteGroup(group)
+//        }
+//        setCurrentGroup(0)
+//    }
 
 
 
@@ -263,12 +273,12 @@ class UniversityRepository private constructor() {
     var studentList: LiveData<List<Student>> = universityDB.getAllStudents().asLiveData()
     var student: MutableLiveData<Student> = MutableLiveData()
 
-    fun newStudent(student: Student) {
-        myCoroutineScope.launch {
-            universityDB.insertStudent(student)
-            setCurrentStudent(student)
-        }
-    }
+//    fun newStudent(student: Student) {
+//        myCoroutineScope.launch {
+//            universityDB.insertStudent(student)
+//            setCurrentStudent(student)
+//        }
+//    }
 
     fun setCurrentStudent(_student: Student) {
         student.postValue(_student)
@@ -286,16 +296,16 @@ class UniversityRepository private constructor() {
 
     fun getStudentPosition() = getStudentPosition(student.value ?: Student())
 
-    fun updateStudent(student: Student) {
-        newStudent(student)
-    }
-
-    fun deleteStudent(student: Student) {
-        myCoroutineScope.launch {
-            universityDB.deleteStudent(student)
-            setCurrentStudent(0)
-        }
-    }
+//    fun updateStudent(student: Student) {
+//        newStudent(student)
+//    }
+//
+//    fun deleteStudent(student: Student) {
+//        myCoroutineScope.launch {
+//            universityDB.deleteStudent(student)
+//            setCurrentStudent(0)
+//        }
+//    }
 
 
 
@@ -401,9 +411,116 @@ class UniversityRepository private constructor() {
     }
 
 
+    fun fetchGroup(){
+        universityAPI.getGroups().enqueue(object : retrofit2.Callback<GroupResponse>{
+            override fun onFailure(call: Call<GroupResponse>, t: Throwable) {
+                Log.d(TAG, "Ошибка получения списка групп", t)
+            }
+
+            override fun onResponse(call: Call<GroupResponse>, response: Response<GroupResponse>) {
+                if (response.code() == 200){
+                    val faculties = response.body()
+                    val items = faculties?.items ?: emptyList()
+                    Log.d(TAG, "Получен список групп $items")
+                    myCoroutineScope.launch {
+                        universityDB.deleteAllGroups()
+                        for(f in items){
+                            universityDB.insertGroup(f)
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+    private fun updateGroup(facultyPost: GroupPost){
+        universityAPI.postGroup(facultyPost)
+            .enqueue(object: retrofit2.Callback<PostResult>{
+                override fun onResponse(call: Call<PostResult>, response: Response<PostResult>) {
+                    if(response.code() == 200) {
+                        fetchGroup()
+                        Log.d(TAG, "Данные получены")
+                    }
+                }
+
+                override fun onFailure(call: Call<PostResult>, t: Throwable) {
+                    Log.d(TAG, "Ошибка изменения списка групп", t)
+                }
+            })
+    }
+
+    fun newGroup(group: Group){
+        updateGroup(GroupPost(APPEND_GROUP, group))
+    }
+    fun deleteGroup(group: Group){
+        updateGroup(GroupPost(DELETE_GROUP, group))
+    }
+    fun updateGroup(group: Group){
+        updateGroup(GroupPost(UPDATE_GROUP, group))
+    }
+
+
+
+    fun fetchStudent(){
+        universityAPI.getStudents().enqueue(object : retrofit2.Callback<StudentResponse>{
+            override fun onFailure(call: Call<StudentResponse>, t: Throwable) {
+                Log.d(TAG, "Ошибка получения списка студентов", t)
+            }
+
+            override fun onResponse(call: Call<StudentResponse>, response: Response<StudentResponse>) {
+                if (response.code() == 200){
+                    val faculties = response.body()
+                    val items = faculties?.items ?: emptyList()
+                    Log.d(TAG, "Получен список студентов $items")
+                    myCoroutineScope.launch {
+                        universityDB.deleteAllStudents()
+                        for(f in items){
+                            universityDB.insertStudent(f)
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+    private fun updateStudent(facultyPost: StudentPost){
+        universityAPI.postStudent(facultyPost)
+            .enqueue(object: retrofit2.Callback<PostResult>{
+                override fun onResponse(call: Call<PostResult>, response: Response<PostResult>) {
+                    if(response.code() == 200) {
+                        fetchStudent()
+                        Log.d(TAG, "Данные получены")
+                    }
+                }
+
+                override fun onFailure(call: Call<PostResult>, t: Throwable) {
+                    Log.d(TAG, "Ошибка изменения списка факультетов", t)
+                }
+            })
+    }
+
+    fun newStudent(student: Student){
+        updateStudent(StudentPost(APPEND_STUDENT, student))
+    }
+    fun deleteStudent(student: Student){
+        updateStudent(StudentPost(DELETE_STUDENT, student))
+    }
+    fun updateStudent(student: Student){
+        updateStudent(StudentPost(UPDATE_STUDENT, student))
+    }
+
+
     fun loadData(){
+//        myCoroutineScope.launch {
+//            universityDB.deleteAllStudents()
+//            universityDB.deleteAllGroups()
+//            universityDB.deleteAllFaculties()
+//            universityDB.deleteAllUniversities()
+//        }
         fetchUniversity()
         fetchFaculty()
+        fetchGroup()
+        fetchStudent()
     }
 
 }
