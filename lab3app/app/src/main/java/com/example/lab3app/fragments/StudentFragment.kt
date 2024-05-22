@@ -3,6 +3,7 @@ package com.example.lab3app.fragments
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.lab3app.data.Student
 import com.example.lab3app.data.University
 import com.example.lab3app.databinding.FragmentStudentBinding
 import com.example.lab3app.databinding.FragmentStudentsBinding
+import com.example.lab3app.repository.TAG
 import com.example.lab3app.repository.UniversityRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -23,6 +25,7 @@ private const val ARG_PARAM1 = "com.example.app3_352_2024.student_param"
 class StudentFragment : Fragment() {
 
     private lateinit var student: Student
+    private lateinit var viewModel: StudentsViewModel
     private lateinit var _binding: FragmentStudentBinding
 
     val binding
@@ -51,6 +54,7 @@ class StudentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding=FragmentStudentBinding.inflate(inflater,container,false)
+        viewModel = ViewModelProvider(this).get(StudentsViewModel::class.java)
 
         val sexArray = resources.getStringArray(R.array.SEX)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sexArray)
@@ -88,7 +92,11 @@ class StudentFragment : Fragment() {
             student.firstName=binding.etName.text.toString()
             student.middleName=binding.etMiddlename.text.toString()
             student.phone=_binding.etPhone.text.toString()
-            UniversityRepository.getInstance().updateStudent(student)
+            Log.d(TAG, viewModel.isNew!!.toString())
+            if (viewModel.isNew!!)
+                UniversityRepository.getInstance().newStudent(student)
+            else
+                UniversityRepository.getInstance().updateStudent(student)
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         return  binding.root
@@ -102,6 +110,7 @@ class StudentFragment : Fragment() {
                 arguments=Bundle().apply {
                     putString(ARG_PARAM1, Gson().toJson(student))
                 }
+
             }
 
     }
