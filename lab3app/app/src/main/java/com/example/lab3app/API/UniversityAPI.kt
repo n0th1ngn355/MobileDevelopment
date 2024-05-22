@@ -52,6 +52,6 @@ interface UniversityAPI {
     @GET("?code=$GET_STUDENT")
     fun getStudents(): Call<StudentResponse>
     @Headers("Content-Type: application/json")
-    @POST("group")
+    @POST("student")
     fun postStudent(@Body postStudent: StudentPost): Call<PostResult>
 }

@@ -15,6 +15,7 @@ import com.example.lab3app.MainActivity
 import com.example.lab3app.R
 import com.example.lab3app.data.Group
 import com.example.lab3app.databinding.FragmentGroupsBinding
+import com.example.lab3app.repository.UniversityRepository
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -40,6 +41,7 @@ class GroupsFragment : Fragment(), MainActivity.Edit {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        UniversityRepository.getInstance().fetchStudent()
         _binding = FragmentGroupsBinding.inflate(inflater, container, false)
         return binding.root
     }

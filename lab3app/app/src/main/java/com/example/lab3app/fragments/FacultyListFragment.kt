@@ -21,6 +21,7 @@ import com.example.lab3app.MainActivity
 import com.example.lab3app.R
 import com.example.lab3app.data.Faculty
 import com.example.lab3app.databinding.FragmentFacultyListBinding
+import com.example.lab3app.repository.UniversityRepository
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -171,6 +172,7 @@ class FacultyListFragment : Fragment() {
                 val cl = View.OnClickListener {
                     viewModel.setCurrentFaculty(faculty)
                     updateCurrentView(itemView)
+                    UniversityRepository.getInstance().fetchGroup()
                     (requireActivity() as UpdateActivity).setFragment(MainActivity.groupID)
                 }
 

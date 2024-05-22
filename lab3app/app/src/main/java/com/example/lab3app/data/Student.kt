@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import java.util.Date
 import java.util.UUID
 
@@ -20,11 +21,11 @@ import java.util.UUID
     ])
 data class Student(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
-    var lastName: String = "",
-    var firstName: String = "",
-    var middleName: String = "",
-    @ColumnInfo(name = "birth_date") var birthDate: Date = Date(),
-    @ColumnInfo(name = "group_id") var groupID: UUID?= null,
+    @SerializedName("last_name") var lastName: String = "",
+    @SerializedName("first_name") var firstName: String = "",
+    @SerializedName("middle_name") var middleName: String = "",
+    @SerializedName("birth_date") @ColumnInfo(name = "birth_date") var birthDate: Date = Date(),
+    @SerializedName("group_id") @ColumnInfo(name = "group_id") var groupID: UUID?= null,
     var phone: String="",
     var sex : Int=0
 ){

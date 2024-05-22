@@ -419,8 +419,8 @@ class UniversityRepository private constructor() {
 
             override fun onResponse(call: Call<GroupResponse>, response: Response<GroupResponse>) {
                 if (response.code() == 200){
-                    val faculties = response.body()
-                    val items = faculties?.items ?: emptyList()
+                    val groups = response.body()
+                    val items = groups?.items ?: emptyList()
                     Log.d(TAG, "Получен список групп $items")
                     myCoroutineScope.launch {
                         universityDB.deleteAllGroups()
@@ -428,6 +428,8 @@ class UniversityRepository private constructor() {
                             universityDB.insertGroup(f)
                         }
                     }
+                }else{
+                    Log.d(TAG, "Ошибка получения списка групп ${response.body()}")
                 }
             }
 
@@ -469,8 +471,8 @@ class UniversityRepository private constructor() {
 
             override fun onResponse(call: Call<StudentResponse>, response: Response<StudentResponse>) {
                 if (response.code() == 200){
-                    val faculties = response.body()
-                    val items = faculties?.items ?: emptyList()
+                    val students = response.body()
+                    val items = students?.items ?: emptyList()
                     Log.d(TAG, "Получен список студентов $items")
                     myCoroutineScope.launch {
                         universityDB.deleteAllStudents()
@@ -483,8 +485,8 @@ class UniversityRepository private constructor() {
 
         })
     }
-    private fun updateStudent(facultyPost: StudentPost){
-        universityAPI.postStudent(facultyPost)
+    private fun updateStudent(studentPost: StudentPost){
+        universityAPI.postStudent(studentPost)
             .enqueue(object: retrofit2.Callback<PostResult>{
                 override fun onResponse(call: Call<PostResult>, response: Response<PostResult>) {
                     if(response.code() == 200) {
@@ -518,9 +520,9 @@ class UniversityRepository private constructor() {
 //            universityDB.deleteAllUniversities()
 //        }
         fetchUniversity()
-        fetchFaculty()
-        fetchGroup()
-        fetchStudent()
+//        fetchFaculty()
+//        fetchGroup()
+//        fetchStudent()
     }
 
 }

@@ -18,6 +18,7 @@ import com.example.lab3app.MainActivity
 import com.example.lab3app.R
 import com.example.lab3app.data.University
 import com.example.lab3app.databinding.FragmentUniversityListBinding
+import com.example.lab3app.repository.UniversityRepository
 
 class UniversityListFragment : Fragment(), MainActivity.Edit {
 
@@ -106,6 +107,7 @@ class UniversityListFragment : Fragment(), MainActivity.Edit {
                     viewModel.setCurrentUniversity(university)
 
                     (requireContext() as UpdateActivity).setFragment(MainActivity.facultyId)
+                    UniversityRepository.getInstance().fetchFaculty()
                     true
                 }
                 c_l?.setOnLongClickListener(lcl)
