@@ -15,7 +15,7 @@ import com.example.lab3app.data.University
 
 @Database(
     entities = [University::class, Faculty::class, Group::class, Student::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 

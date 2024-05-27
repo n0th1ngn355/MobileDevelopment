@@ -10,14 +10,15 @@ import java.util.UUID
 
 @Entity(tableName = "faculties",
     indices = [Index("id"), Index("university_id")],
-    foreignKeys = [
-        ForeignKey(
-            entity = University::class,
-            parentColumns = ["id"],
-            childColumns = ["university_id"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ])
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = University::class,
+//            parentColumns = ["id"],
+//            childColumns = ["university_id"],
+//            onDelete = ForeignKey.CASCADE
+//        )
+//    ]
+)
 data class Faculty(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     @SerializedName("faculty_name") @ColumnInfo(name = "faculty_name") var name: String = "",

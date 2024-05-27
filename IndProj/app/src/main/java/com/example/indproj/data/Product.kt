@@ -5,24 +5,20 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import java.util.UUID
 
-@Entity(tableName = "products",
-    indices = [Index("id")],
-    foreignKeys = [
-        ForeignKey(
-            entity = Category::class,
-            parentColumns = ["id"],
-            childColumns = ["category_id"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ])
+
+@Entity(indices = [Index("id"), Index("categoryId")])
 
 data class Product(
-    @PrimaryKey val id: UUID = UUID.randomUUID(),
-    @ColumnInfo(name="product_name") val name: String = "",
-    val brand: String = "",
-    val availability: String = "",
-    val fullDescription: String = "",
-    @ColumnInfo(name = "category_id") val categoryId: UUID?= null
+    @PrimaryKey @SerializedName("id") val id: String = UUID.randomUUID().toString(),
+    @SerializedName("product_name") var name: String = "",
+    @SerializedName("description") var description: String? = null,
+    @SerializedName("price") var price: Double = 0.0,
+    @SerializedName("category_id") var categoryId: String = "",
+    @SerializedName("stock_quantity") var stockQuantity: Int = 0,
+    @SerializedName("manufacturer") var manufacturer: String = "",
+    @SerializedName("sizes_available") var sizesAvailable: String = "",
+    @SerializedName("color") var color: String = ""
 )

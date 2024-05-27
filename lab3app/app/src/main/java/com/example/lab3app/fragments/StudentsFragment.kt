@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.speech.RecognizerIntent
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ import com.example.lab3app.data.Group
 import com.example.lab3app.data.Student
 import com.example.lab3app.databinding.FragmentStudentBinding
 import com.example.lab3app.databinding.FragmentStudentsBinding
+import com.example.lab3app.repository.TAG
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -65,8 +67,7 @@ class StudentsFragment : Fragment() {
             binding.rvStudents.adapter = StudentAdapter(it)
         }
         binding.fabNewStudent.setOnClickListener{
-            viewModel.isNew = true
-            editStudent(Student().apply { groupID = viewModel.group!!.id })
+            editStudent(Student().apply { groupID = viewModel.group!!.id }, true)
 //            editStudent(null)
         }
     }
@@ -85,8 +86,8 @@ class StudentsFragment : Fragment() {
             .show()
     }
 
-    private fun editStudent(student: Student?){
-        (requireActivity() as UpdateActivity).setFragment(MainActivity.studentID, student)
+    private fun editStudent(student: Student?, flag: Boolean){
+        (requireActivity() as UpdateActivity).setFragment(MainActivity.studentID, student, flag)
         (requireActivity() as UpdateActivity).setTitle("Группа ${viewModel.group!!.name}")
     }
 
@@ -136,8 +137,7 @@ class StudentsFragment : Fragment() {
                     updateCurrentView(itemView)
                 }
                 itemView.findViewById<ImageButton>(R.id.ibEditStudent).setOnClickListener{
-                    viewModel.isNew = false
-                    editStudent(student)
+                    editStudent(student, false)
                 }
 
                 itemView.findViewById<ImageButton>(R.id.ibDeleteStudent).setOnClickListener{

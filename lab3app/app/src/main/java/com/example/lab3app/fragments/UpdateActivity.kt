@@ -4,6 +4,6 @@ import com.example.lab3app.data.Student
 
 interface UpdateActivity {
     fun setTitle(_title: String)
-    fun setFragment(fragmentID: Int, student: Student?=null)
+    fun setFragment(fragmentID: Int, student: Student?=null, flag: Boolean=true)
 
 }

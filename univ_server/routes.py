@@ -91,7 +91,7 @@ def manage_group():
     
     elif data['action'] == 32:
         group = Group.query.get_or_404(it['id'])
-        group.name = it['faculty_name']
+        group.name = it['group_name']
         group.faculty_id = it['faculty_id']
         db.session.commit()
         return jsonify({}), 200

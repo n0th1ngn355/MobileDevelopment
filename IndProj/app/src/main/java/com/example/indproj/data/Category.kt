@@ -5,10 +5,13 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.UUID
+import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "categories",
-    indices = [Index("id")])
+@Entity(
+    indices = [Index("id"), Index("name")]
+)
+
 data class Category(
-    @PrimaryKey val id: UUID = UUID.randomUUID(),
-    @ColumnInfo(name = "category_name") val name: String = ""
+    @PrimaryKey @SerializedName("id") val id: String = UUID.randomUUID().toString(),
+    @SerializedName("category_name") var name: String = ""
 )

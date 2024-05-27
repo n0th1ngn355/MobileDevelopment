@@ -496,7 +496,7 @@ class UniversityRepository private constructor() {
                 }
 
                 override fun onFailure(call: Call<PostResult>, t: Throwable) {
-                    Log.d(TAG, "Ошибка изменения списка факультетов", t)
+                    Log.d(TAG, "Ошибка изменения списка студентов", t)
                 }
             })
     }

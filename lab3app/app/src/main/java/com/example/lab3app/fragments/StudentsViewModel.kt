@@ -11,7 +11,6 @@ class StudentsViewModel : ViewModel() {
     var studentList: MutableLiveData<List<Student>> = MutableLiveData()
 
     private var _student: Student? = null
-    var isNew: Boolean? = true
 
     val student
         get() = _student

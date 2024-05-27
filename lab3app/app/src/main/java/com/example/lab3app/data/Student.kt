@@ -11,14 +11,15 @@ import java.util.UUID
 
 @Entity(tableName = "students",
     indices = [Index("id"), Index("group_id")],
-    foreignKeys = [
-        ForeignKey(
-            entity = Group::class,
-            parentColumns = ["id"],
-            childColumns = ["group_id"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ])
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = Group::class,
+//            parentColumns = ["id"],
+//            childColumns = ["group_id"],
+//            onDelete = ForeignKey.CASCADE
+//        )
+//    ]
+)
 data class Student(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     @SerializedName("last_name") var lastName: String = "",

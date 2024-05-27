@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.lab3app.repository.UniversityRepository
 
-class ApplicationInd: Application() {
+class Application352: Application() {
     override fun onCreate() {
         super.onCreate()
         UniversityRepository.getInstance().loadData()
@@ -16,7 +16,7 @@ class ApplicationInd: Application() {
     }
 
     companion object{
-        private var instance: ApplicationInd? = null
+        private var instance: Application352? = null
         val context
             get() = applicationContext()
 

@@ -142,13 +142,13 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
     }
 
     private var currentFragmentID = 0
-    override fun setFragment(fragmentID: Int, student: Student?) {
+    override fun setFragment(fragmentID: Int, student: Student?, flag: Boolean) {
         currentFragmentID = fragmentID
         when (fragmentID) {
             universityID -> setFragment(UniversityListFragment.getInstance())
             facultyId -> setFragment(FacultyListFragment.getInstance())
             groupID -> setFragment(GroupsFragment.getInstance())
-            studentID -> setFragment(StudentFragment.newInstance(student ?: Student()))
+            studentID -> setFragment(StudentFragment.newInstance(student ?: Student(), flag))
         }
     }
 

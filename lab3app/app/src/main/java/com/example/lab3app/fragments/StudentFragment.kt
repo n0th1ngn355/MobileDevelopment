@@ -27,10 +27,10 @@ class StudentFragment : Fragment() {
     private lateinit var student: Student
     private lateinit var viewModel: StudentsViewModel
     private lateinit var _binding: FragmentStudentBinding
+    var flag : Boolean = true
 
     val binding
         get()=_binding
-
 
 //    private lateinit var viewModel: StudentViewModel
 
@@ -92,8 +92,8 @@ class StudentFragment : Fragment() {
             student.firstName=binding.etName.text.toString()
             student.middleName=binding.etMiddlename.text.toString()
             student.phone=_binding.etPhone.text.toString()
-            Log.d(TAG, viewModel.isNew!!.toString())
-            if (viewModel.isNew!!)
+            Log.d(TAG, flag.toString())
+            if (flag)
                 UniversityRepository.getInstance().newStudent(student)
             else
                 UniversityRepository.getInstance().updateStudent(student)
@@ -105,12 +105,12 @@ class StudentFragment : Fragment() {
 
     companion object{
         @JvmStatic
-        fun newInstance(student: Student) =
+        fun newInstance(student: Student, fl: Boolean) =
             StudentFragment().apply {
+                flag = fl
                 arguments=Bundle().apply {
                     putString(ARG_PARAM1, Gson().toJson(student))
                 }
-
             }
 
     }
