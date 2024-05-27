@@ -1,13 +1,14 @@
-package com.example.lab3app
+package com.example.indproj
+
 
 import android.app.Application
 import android.content.Context
-import com.example.lab3app.repository.UniversityRepository
+import com.example.indproj.repository.ProjRepository
 
-class ApplicationInd: Application() {
+class ApplicationIndiv: Application() {
     override fun onCreate() {
         super.onCreate()
-        UniversityRepository.getInstance().loadData()
+        ProjRepository.getInstance().loadData()
     }
 
 
@@ -16,7 +17,7 @@ class ApplicationInd: Application() {
     }
 
     companion object{
-        private var instance: ApplicationInd? = null
+        private var instance: ApplicationIndiv? = null
         val context
             get() = applicationContext()
 
