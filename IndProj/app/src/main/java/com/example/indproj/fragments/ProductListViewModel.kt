@@ -18,6 +18,21 @@ class ProductListViewModel : ViewModel() {
 
     var category: Category? = null
 
+    fun sortByName(){
+        productList.postValue(
+            productList.value?.sortedBy {
+                it.name
+            }
+        )
+    }
+    fun sortByManufacturer(){
+        productList.postValue(
+            productList.value?.sortedBy {
+                it.manufacturer
+            }
+        )
+    }
+
     fun set_Category(category: Category){
         this.category = category
         ProjRepository.getInstance().productList.observeForever{
@@ -36,30 +51,7 @@ class ProductListViewModel : ViewModel() {
         }
     }
 
-//    fun appendProduct(lastName: String, firstName: String, middleName: String, birthDate: Date, phone: String, sex:Int){
-//        val product=Product()
-//        product.lastName=lastName
-//        product.firstName=firstName
-//        product.middleName=middleName
-//        product.birthDate=birthDate
-//        product.phone=phone
-//        product.sex=sex
-//        product.categoryID=category!!.id
-//        ProjRepository.getInstance().newProduct(product)
-//    }
-//
-//    fun updateProduct(lastName: String, firstName: String, middleName: String, birthDate: Date, phone: String, sex:Int){
-//        if(_product!=null){
-//            _product!!.lastName=lastName
-//            _product!!.firstName=firstName
-//            _product!!.middleName=middleName
-//            _product!!.birthDate=birthDate
-//            _product!!.phone=phone
-//            _product!!.sex=sex
-//            _product!!.categoryID=category!!.id
-//            ProjRepository.getInstance().updateProduct(_product!!)
-//        }
-//    }
+
 
     fun setCurrentProduct(product: Product){
         ProjRepository.getInstance().setCurrentProduct(product)

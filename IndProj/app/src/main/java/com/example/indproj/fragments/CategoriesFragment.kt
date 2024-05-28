@@ -29,7 +29,6 @@ class CategoriesFragment : Fragment(), MainActivity.Edit {
 
         fun getInstance(): CategoriesFragment {
             if (INSTANCE == null) INSTANCE = CategoriesFragment()
-            Log.d(TAG, "СУКА ЕБАНАЯ")
             return INSTANCE ?: throw Exception("CategoriesFragment не создан")
         }
     }
@@ -52,7 +51,7 @@ class CategoriesFragment : Fragment(), MainActivity.Edit {
 
         viewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
         val ma = (requireActivity() as UpdateActivity)
-        ma.setTitle("Категории")
+        ma.setTitle("Отделы")
 
         viewModel.categoryList.observe(viewLifecycleOwner){
             createUI(it)
@@ -114,7 +113,7 @@ class CategoriesFragment : Fragment(), MainActivity.Edit {
             LayoutInflater.from(requireContext()).inflate(R.layout.dialog_edit, null)
         val inputName = mDialogView.findViewById<EditText>(R.id.etName)
         AlertDialog.Builder(requireContext())
-            .setTitle("Информация о категории ")
+            .setTitle("Информация об отделе")
             .setView(mDialogView)
             .setPositiveButton("Добавить") { _, _ ->
                 if (inputName.text.isNotBlank()) {
@@ -133,7 +132,7 @@ class CategoriesFragment : Fragment(), MainActivity.Edit {
         val inputName = mDialogView.findViewById<EditText>(R.id.etName)
         inputName.setText(viewModel.category?.name ?: "")
         AlertDialog.Builder(requireContext())
-            .setTitle("Изменить информацию о категории")
+            .setTitle("Изменить информацию об отделе")
             .setView(mDialogView)
             .setPositiveButton("Изменить") { _, _ ->
                 if (inputName.text.isNotBlank()) {
@@ -154,7 +153,7 @@ class CategoriesFragment : Fragment(), MainActivity.Edit {
         if(viewModel.category == null) return
         AlertDialog.Builder(requireContext())
             .setTitle("Удаление!")
-            .setMessage("Вы действительно хотите удалить категорию ${viewModel.category?.name ?: ""}?")
+            .setMessage("Вы действительно хотите удалить отдел ${viewModel.category?.name ?: ""}?")
             .setPositiveButton("Да") { _, _ ->
                 viewModel.deleteCategory()
             }

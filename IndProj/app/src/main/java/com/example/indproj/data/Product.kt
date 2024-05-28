@@ -19,6 +19,7 @@ data class Product(
     @SerializedName("category_id") var categoryId: String = "",
     @SerializedName("stock_quantity") var stockQuantity: Int = 0,
     @SerializedName("manufacturer") var manufacturer: String = "",
+    @SerializedName("country") var country: String = "",
     @SerializedName("sizes_available") var sizesAvailable: String = "",
     @SerializedName("color") var color: String = ""
 )

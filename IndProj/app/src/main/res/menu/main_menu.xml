@@ -4,13 +4,13 @@
     <item
         android:id="@+id/miNewCategory"
         android:icon="@android:drawable/ic_input_add"
-        android:title="Добавить категорию" />
+        android:title="Добавить отдел" />
     <item
         android:id="@+id/miUpdateCategory"
-        android:title="Изменить категорию" />
+        android:title="Изменить отдел" />
     <item
         android:id="@+id/miDeleteCategory"
-        android:title="Удалить категорию" />
+        android:title="Удалить отдел" />
 
 
 </menu>

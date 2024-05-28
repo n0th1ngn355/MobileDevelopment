@@ -27,6 +27,7 @@ class StudentsViewModel : ViewModel() {
         UniversityRepository.getInstance().student.observeForever{
             _student = it
         }
+//        UniversityRepository.getInstance().setCurrentStudent(1)
     }
 
     fun deleteStudent(){
@@ -59,7 +60,10 @@ class StudentsViewModel : ViewModel() {
             UniversityRepository.getInstance().updateStudent(_student!!)
         }
     }
-
+    fun setCurrentStudent(position: Int){
+        if((studentList.value?.size ?: 0) > position)
+            studentList.value?.let{UniversityRepository.getInstance().setCurrentStudent(it.get(position))}
+    }
     fun setCurrentStudent(student: Student){
         UniversityRepository.getInstance().setCurrentStudent(student)
     }

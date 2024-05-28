@@ -56,7 +56,8 @@ def manage_product():
             category_id=product_data['category_id'],
             stock_quantity=product_data['stock_quantity'],
             manufacturer=product_data['manufacturer'],
-            sizes_available=','.join(product_data['sizes_available']),  # Преобразование списка в строку
+            country=product_data['country'],
+            sizes_available=product_data['sizes_available'],
             color=product_data['color']
         )
         db.session.add(new_product)
@@ -71,7 +72,8 @@ def manage_product():
         product.category_id = product_data['category_id']
         product.stock_quantity = product_data['stock_quantity']
         product.manufacturer = product_data['manufacturer']
-        product.sizes_available = ','.join(product_data['sizes_available'])  # Преобразование списка в строку
+        product.country = product_data['country']
+        product.sizes_available = product_data['sizes_available']
         product.color = product_data['color']
         db.session.commit()
         return jsonify({}), 200

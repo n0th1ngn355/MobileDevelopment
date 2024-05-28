@@ -26,11 +26,9 @@ class ProductFragment : Fragment() {
     private lateinit var viewModel: ProductListViewModel
     private lateinit var _binding: FragmentProductBinding
 
+    var flag : Boolean = true
     val binding
         get()=_binding
-
-
-//    private lateinit var viewModel: ProductViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +43,6 @@ class ProductFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,57 +51,43 @@ class ProductFragment : Fragment() {
         _binding=FragmentProductBinding.inflate(inflater,container,false)
         viewModel = ViewModelProvider(this).get(ProductListViewModel::class.java)
 
-//        val sexArray = resources.getStringArray(R.array.SEX)
-//        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sexArray)
-//        binding.spSex.adapter=adapter
-//        binding.spSex.setSelection(product.sex)
-//        binding.spSex.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                product.sex=position
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//                TODO("Not yet implemented")
-//            }
-//        }
-//        binding.cvBirthDate.setOnDateChangeListener{
-//                view,year,month,dayOfMonth->
-//            product.birthDate.time=
-//                SimpleDateFormat("yyyy.MM.dd").parse("$year.$month.$dayOfMonth")?.time ?: product.birthDate.time
-//        }
-//        binding.etName.setText(product.firstName)
-//        binding.etLastname.setText(product.lastName)
-//        binding.etMiddlename.setText(product.middleName)
-//        binding.etPhone.setText(product.phone)
-//        binding.cvBirthDate.date=product.birthDate.time
-//        binding.btnCancel.setOnClickListener{
-//            requireActivity().onBackPressedDispatcher.onBackPressed()
-//        }
-//        binding.btnSave.setOnClickListener{
-//            product.lastName=binding.etLastname.text.toString()
-//            product.firstName=binding.etName.text.toString()
-//            product.middleName=binding.etMiddlename.text.toString()
-//            product.phone=_binding.etPhone.text.toString()
-//            Log.d(TAG, viewModel.isNew!!.toString())
-//            if (viewModel.isNew!!)
-//                ProjRepository.getInstance().newProduct(product)
-//            else
-//                ProjRepository.getInstance().updateProduct(product)
-//            requireActivity().onBackPressedDispatcher.onBackPressed()
-//        }
+        binding.etProductName.setText(product.name)
+        binding.etDescription.setText(product.description ?: "")
+        binding.etPrice.setText(product.price.toString())
+        binding.etColor.setText(product.color)
+        binding.etSizes.setText(product.sizesAvailable)
+        binding.etCountry.setText(product.country)
+        binding.etStockQuantity.setText(product.stockQuantity.toString())
+        binding.etManufacturer.setText(product.manufacturer)
+
+        binding.btnCancel.setOnClickListener{
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+        binding.btnSave.setOnClickListener{
+            product.name = binding.etProductName.text.toString()
+            product.description = binding.etDescription.text.toString()
+            product.price = binding.etPrice.text.toString().toDouble()
+            product.color = binding.etColor.text.toString()
+            product.sizesAvailable = binding.etSizes.text.toString()
+            product.country = binding.etCountry.text.toString()
+            product.stockQuantity = binding.etStockQuantity.text.toString().toInt()
+            product.manufacturer = binding.etManufacturer.text.toString()
+            if (flag)
+                ProjRepository.getInstance().newProduct(product)
+            else
+                ProjRepository.getInstance().updateProduct(product)
+            ProjRepository.getInstance().setCurrentProduct(product)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
         return  binding.root
 //        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     companion object{
         @JvmStatic
-        fun newInstance(product: Product) =
+        fun newInstance(product: Product, fl: Boolean) =
             ProductFragment().apply {
+                flag = fl
                 arguments=Bundle().apply {
                     putString(ARG_PARAM1, Gson().toJson(product))
                 }

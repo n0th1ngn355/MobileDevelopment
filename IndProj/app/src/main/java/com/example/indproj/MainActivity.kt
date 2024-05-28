@@ -1,8 +1,12 @@
 package com.example.indproj
 
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -42,7 +46,7 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
                     }
                     productID->{
                         currentFragmentID= categoryID
-                        setTitle("Категории")
+                        setTitle("Отделы")
                     }
                     else ->{}
                 }
@@ -86,15 +90,17 @@ class MainActivity : AppCompatActivity(), UpdateActivity {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+
     override fun setTitle(_title: String) {
         title = _title
     }
 
-    override fun setFragment(fragmentID: Int, product: Product?) {
+    override fun setFragment(fragmentID: Int, product: Product?, flag: Boolean) {
         currentFragmentID = fragmentID
         when (fragmentID) {
             categoryID -> setFragment(CategoriesFragment.getInstance())
-            productID -> setFragment(ProductFragment.newInstance(product ?: Product()))
+            productID -> setFragment(ProductFragment.newInstance(product ?: Product(), flag))
         }
     }
 

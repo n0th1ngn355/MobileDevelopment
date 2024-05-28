@@ -65,6 +65,7 @@ class StudentsFragment : Fragment() {
         viewModel.set_Group(group)
         viewModel.studentList.observe(viewLifecycleOwner){
             binding.rvStudents.adapter = StudentAdapter(it)
+//            viewModel.setCurrentStudent(viewModel.studentList.value?.count()?.minus(1) ?: 0)
         }
         binding.fabNewStudent.setOnClickListener{
             editStudent(Student().apply { groupID = viewModel.group!!.id }, true)

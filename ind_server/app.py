@@ -32,7 +32,8 @@ def init_db(db):
             category_id=c0.id,
             stock_quantity=100,
             manufacturer='Brand A',
-            sizes_available=';'.join(['S', 'M', 'L', 'XL']),
+            country='Russia',
+            sizes_available=', '.join(['S', 'M', 'L', 'XL']),
             color='Blue'
         ),
         Product(
@@ -42,7 +43,8 @@ def init_db(db):
             category_id=c0.id,
             stock_quantity=50,
             manufacturer='Brand B',
-            sizes_available=';'.join(['32', '34', '36', '38']),
+            country='Russia',
+            sizes_available=', '.join(['32', '34', '36', '38']),
             color='Blue'
         ),
         Product(
@@ -52,7 +54,8 @@ def init_db(db):
             category_id=c1.id,
             stock_quantity=30,
             manufacturer='Brand C',
-            sizes_available=';'.join(['S', 'M', 'L']),
+            country='Russia',
+            sizes_available=', '.join(['S', 'M', 'L']),
             color='Red'
         ),
         Product(
@@ -62,7 +65,8 @@ def init_db(db):
             category_id=c3.id,
             stock_quantity=150,
             manufacturer='Brand D',
-            sizes_available=';'.join(['One Size']),
+            country='Russia',
+            sizes_available=', '.join(['One Size']),
             color='White'
         )
     ]
@@ -90,6 +94,7 @@ def create_app():
 
     return app
 
-if __name__ == '__main__':
+
+if __name__  == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run()

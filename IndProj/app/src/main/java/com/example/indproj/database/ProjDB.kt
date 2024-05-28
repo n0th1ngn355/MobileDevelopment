@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [Category::class, Product::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 
